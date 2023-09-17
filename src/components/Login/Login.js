@@ -8,6 +8,8 @@ const Login = (props) => {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [emailIsValid, setEmailIsValid] = useState();
   const [enteredPassword, setEnteredPassword] = useState('');
+  const [enteredcollegeName, setEnteredcollegeName] = useState('');
+  const [collegeNameIsValid, setcollegeNameIsValid] = useState();
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -26,6 +28,13 @@ const Login = (props) => {
       event.target.value.trim().length > 6 && enteredEmail.includes('@')
     );
   };
+  const collegeNameChangeHandler = (event) => {
+    setEnteredcollegeName(event.target.value);
+
+    setFormIsValid(
+      event.target.value.trim().length > 0 && enteredPassword.trim().length > 6
+      );
+  };
 
   const validateEmailHandler = () => {
     setEmailIsValid(enteredEmail.includes('@'));
@@ -34,10 +43,13 @@ const Login = (props) => {
   const validatePasswordHandler = () => {
     setPasswordIsValid(enteredPassword.trim().length > 6);
   };
+  const validatecollegeNameHandler = () => {
+    setcollegeNameIsValid(enteredcollegeName.trim().length > 0);
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(enteredEmail, enteredPassword);
+    props.onLogin(enteredEmail, enteredPassword, enteredcollegeName);
   };
 
   return (
@@ -57,6 +69,21 @@ const Login = (props) => {
             onBlur={validateEmailHandler}
           />
         </div>
+        <div
+          className={`${classes.control} ${
+            collegeNameIsValid === false ? classes.invalid : ''
+          }`}
+        >
+          <label htmlFor="collegeName">College name</label>
+          <input
+            type="text"
+            id="collegeName"
+            value={enteredcollegeName}
+            onChange={collegeNameChangeHandler}
+            onBlur={validatecollegeNameHandler}
+          />
+        </div>
+
         <div
           className={`${classes.control} ${
             passwordIsValid === false ? classes.invalid : ''
